@@ -1,0 +1,21 @@
+name: poddy
+description: A new Flutter project.
+
+dependencies:
+  http: "^0.11.3+16"
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  
+  fonts:
+    - family: Norwester
+      fonts:
+        - asset: assets/norwester.otf
