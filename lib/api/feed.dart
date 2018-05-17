@@ -12,7 +12,7 @@ class Podcast {
 
   factory Podcast.fromXml() {
     return new Podcast(
-      name: "test"
+      name: 'test'
     );
   }
 }

@@ -24,10 +24,9 @@ class SearchPageState extends State<SearchPage> {
   }
 
   showPodcast(SearchResult result) {
-    Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => new PodcastPage()),
-    );
+    Navigator.of(context).push(new PageRouteBuilder(
+      pageBuilder: (_, __, ___) => new PodcastPage(result),
+    ));
   }
 
   @override
