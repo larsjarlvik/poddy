@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:poddy/api/search.dart';
-import 'package:poddy/components/AppBar.dart';
 import 'package:poddy/components/PodcastBanner.dart';
 
 class PodcastPage extends StatefulWidget {
@@ -22,7 +21,7 @@ class PodcastPageState extends State<PodcastPage> {
     return new Scaffold(
       body: new Column(
         children: <Widget>[
-          podcastBanner(context, searchResult.artworkLarge),
+          new PodcastBanner(searchResult.artworkLarge),
           new Text(searchResult.name)
         ],
       )

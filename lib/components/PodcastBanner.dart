@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 
-Widget podcastBanner(BuildContext context, String url) {
-  return new Stack(
-    children: <Widget>[
-      _buildImage(url),
-      _buildTopHeader(context),
-    ],
-  );
+
+class PodcastBanner extends StatelessWidget {
+  final String url;
+
+  PodcastBanner(String url) : url = url;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Stack(
+      children: <Widget>[
+        _buildImage(url),
+        _buildTopHeader(context),
+      ],
+    );
+  }
 }
 
 class DialogonalClipper extends CustomClipper<Path> {
