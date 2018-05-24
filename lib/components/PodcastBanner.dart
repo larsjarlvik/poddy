@@ -10,7 +10,7 @@ class PodcastBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Stack(
       children: <Widget>[
-        _buildImage(url),
+        _buildImage(context, url),
         _buildTopHeader(context),
       ],
     );
@@ -21,8 +21,8 @@ class DialogonalClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = new Path();
-    path.lineTo(0.0, size.height - 60.0);
-    path.lineTo(size.width, size.height);
+    path.lineTo(0.0, size.height);
+    path.lineTo(size.width, size.height - 60.0);
     path.lineTo(size.width, 0.0);
     path.close();
     return path;
@@ -32,28 +32,45 @@ class DialogonalClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
 
-Widget _buildImage(String url) {
-  return new ClipPath(
-    clipper: new DialogonalClipper(),
-    child: new Stack(
-      children: [
-        new AspectRatio(
-          aspectRatio: 4 / 3.5,
-          child: new FadeInImage.assetNetwork(
-            placeholder: '',
-            image: url,
-            fit: BoxFit.fitWidth,
+Widget _buildImage(BuildContext context, String url) {
+  return new Stack(
+    children: [
+      new ClipPath(
+        clipper: new DialogonalClipper(),
+        child: new Container(
+          color: new Color.fromARGB(240, 0, 0, 0),
+          child: new Stack(
+            children: [
+              new AspectRatio(
+                aspectRatio: 4 / 3.5,
+                child: new FadeInImage.assetNetwork(
+                  placeholder: '',
+                  image: url,
+                  fit: BoxFit.fitWidth,
+                )
+              ),
+              new AspectRatio(
+                aspectRatio: 4 / 3.5,
+                child: Container(
+                  color: new Color.fromARGB(50, 0, 0, 0),
+                  width: double.infinity,
+                ),
+              ),
+            ],
           )
-        ),
-        new AspectRatio(
-          aspectRatio: 4 / 3.5,
-          child: Container(
-            color: new Color.fromARGB(50, 0, 0, 0),
-            width: double.infinity,
-          ),
         )
-      ]
-    )
+      ),
+      new Positioned(
+        bottom: 20.0,
+        right: 20.0,
+        child: new FloatingActionButton(
+          child: new Icon(Icons.subscriptions, size: 32.0),
+          foregroundColor: Colors.white,
+          backgroundColor: Theme.of(context).accentColor,
+          onPressed: () => {},
+        ),
+      )
+    ]
   );
 }
 

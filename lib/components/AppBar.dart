@@ -17,7 +17,8 @@ AppBar buildAppBar(BuildContext context, { backButton: false }) {
     ),
     backgroundColor: Colors.white,
     leading: leading,
-    centerTitle: true
+    centerTitle: true,
+    elevation: 1.5,
   );
 
   return appBar;

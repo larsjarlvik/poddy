@@ -15,13 +15,10 @@ class Poddy extends StatelessWidget {
       title: 'Poddy',
       color: Colors.white,
       theme: new ThemeData(
-        brightness: Brightness.light,
-        accentColor: Colors.cyan,
+        primarySwatch: Colors.blue,
+        accentColor: const Color(0xFFF850DD),
       ),
       home: new MainPage(),
-      routes: <String, WidgetBuilder> {
-        '/main': (BuildContext context) => new MainPage(),
-      },
     );
   }
 }
@@ -58,7 +55,12 @@ class MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      bottomNavigationBar: new Container(
+      bottomNavigationBar: _buildBottomNavBar(context)
+    );
+  }
+
+  Widget _buildBottomNavBar(BuildContext context) {
+    return new Container(
         decoration: new BoxDecoration(
           color: Colors.white,
           border: new Border(top: new BorderSide(
@@ -85,7 +87,6 @@ class MainPageState extends State<MainPage> {
             ),
           ],
         )
-      )
     );
   }
 }
