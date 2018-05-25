@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:poddy/pages/homePage.dart';
 import 'package:poddy/pages/searchPage.dart';
@@ -6,7 +7,13 @@ import 'package:poddy/pages/searchPage.dart';
 import 'package:poddy/components/AppBar.dart';
 
 
-void main() => runApp(new Poddy());
+void main() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
+  runApp(new Poddy());
+}
 
 class Poddy extends StatelessWidget {
   @override
