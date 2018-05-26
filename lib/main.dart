@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:poddy/pages/home_page.dart';
 import 'package:poddy/pages/search_page.dart';
-
-import 'package:poddy/components/app_bar.dart';
-
+import 'package:poddy/pages/player_page.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([
@@ -36,30 +34,29 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  int index = 1;
+  int page = 1;
+  PageController pageController;
+
+  MainPageState() {
+    this.pageController =  new PageController(
+      initialPage: page,
+    );
+  }
 
   setTab(int index) {
-    this.setState(() { this.index = index; });
+    this.pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: buildAppBar(context),
-      body: new Stack(
+      body: new PageView(
+        onPageChanged: (newPage) => this.setState(() => this.page = newPage),
+        controller: pageController,
         children: <Widget>[
-          new Offstage(
-            offstage: index != 0,
-            child: new TickerMode(enabled: index == 0, child: new HomePage()),
-          ),
-          new Offstage(
-            offstage: index != 1,
-            child: new TickerMode(enabled: index == 1, child: new SearchPage()),
-          ),
-          new Offstage(
-            offstage: index != 2,
-            child: new TickerMode(enabled: index == 2, child: new SearchPage()),
-          ),
+          new HomePage(),
+          new PlayerPage(),
+          new SearchPage(),
         ],
       ),
       bottomNavigationBar: _buildBottomNavBar(context)
@@ -77,7 +74,7 @@ class MainPageState extends State<MainPage> {
         ),
         child: new BottomNavigationBar(
           fixedColor: Colors.cyan,
-          currentIndex: this.index,
+          currentIndex: this.page,
           onTap: setTab,
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(

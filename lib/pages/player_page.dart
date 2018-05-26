@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:poddy/components/app_bar.dart';
 
-class HomePage extends StatelessWidget {
+class PlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
       body: new Center(
         child: new RaisedButton(
           onPressed: () {},
-          child: new Text('Go back!'),
+          child: new Text('Player'),
         ),
       ),
     );

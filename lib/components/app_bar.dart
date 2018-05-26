@@ -15,7 +15,7 @@ AppBar buildAppBar(BuildContext context, { backButton: false }) {
     title: new Text("PODDY",
       style: new TextStyle(fontFamily: 'Norwester', color: new Color.fromARGB(255, 50, 50, 50), fontSize: 26.0)
     ),
-    backgroundColor: Colors.white,
+    backgroundColor: new Color.fromARGB(255, 50, 50, 50),
     leading: leading,
     centerTitle: true,
     elevation: 1.5,
