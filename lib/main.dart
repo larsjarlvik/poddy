@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:poddy/pages/homePage.dart';
-import 'package:poddy/pages/searchPage.dart';
+import 'package:poddy/pages/home_page.dart';
+import 'package:poddy/pages/search_page.dart';
 
-import 'package:poddy/components/AppBar.dart';
+import 'package:poddy/components/app_bar.dart';
 
 
 void main() {

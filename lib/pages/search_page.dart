@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:poddy/api/search.dart';
-import 'package:poddy/pages/podcastPage.dart';
+import 'package:poddy/pages/podcast_page.dart';
 
 class SearchPage extends StatefulWidget {
   @override

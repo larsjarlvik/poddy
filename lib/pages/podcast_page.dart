@@ -3,8 +3,8 @@ import 'package:flutter_html_view/html_parser.dart';
 
 import 'package:poddy/api/search.dart';
 import 'package:poddy/api/feed.dart';
-import 'package:poddy/components/PodcastBanner.dart';
-import 'package:poddy/theme/textStyles.dart';
+import 'package:poddy/components/podcast_banner.dart';
+import 'package:poddy/theme/text_styles.dart';
 
 class PodcastPage extends StatefulWidget {
   final SearchResult searchResult;
