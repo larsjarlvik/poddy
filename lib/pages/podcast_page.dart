@@ -45,6 +45,7 @@ class PodcastPageState extends State<PodcastPage> {
             backgroundColor: new Color.fromARGB(0, 0, 0, 0),
             expandedHeight: 400.0,
             flexibleSpace: new PodcastBanner(podcast.artworkLarge, scrollController),
+            pinned: true,
           ),
           new SliverPadding(
             padding: new EdgeInsets.all(0.0),
