@@ -10,17 +10,19 @@ class SearchPage extends StatefulWidget {
 
 class SearchPageState extends State<SearchPage> {
   final searchController = new TextEditingController();
-  var _searchResults = new List<SearchResult>();
+
+  // State
+  var searchResults = new List<SearchResult>();
 
   submitQuery(String value) async {
     String query = value.trim();
-    if (query.length < 3) return;
+    if (query.length < 2) return;
 
     searchController.clear();
     FocusScope.of(context).requestFocus(new FocusNode());
 
     List<SearchResult> results = await doSearch(value);
-    this.setState(() { this._searchResults = results; });
+    this.setState(() { this.searchResults = results; });
   }
 
   showPodcast(SearchResult result) {
@@ -57,12 +59,12 @@ class SearchPageState extends State<SearchPage> {
           new Flexible(
             child: new ListView.builder(
               padding: new EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-              itemCount: _searchResults.length,
+              itemCount: searchResults.length,
               itemBuilder: (BuildContext context, int index) {
                 return new ListTile(
-                  leading: new Image.network(_searchResults[index].artworkSmall),
-                  title: new Text(_searchResults[index].name),
-                  onTap: () => this.showPodcast(_searchResults[index]),
+                  leading: new Image.network(searchResults[index].artworkSmall),
+                  title: new Text(searchResults[index].name),
+                  onTap: () => this.showPodcast(searchResults[index]),
                 );
               },
             )

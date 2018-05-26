@@ -15,12 +15,15 @@ class PodcastPage extends StatefulWidget {
   PodcastPageState createState() => new PodcastPageState(searchResult);
 }
 
+
 class PodcastPageState extends State<PodcastPage> {
+  final scrollController = new ScrollController();
+
   // State
-  var _podcast = new Podcast();
+  var podcast = new Podcast();
   
   PodcastPageState(SearchResult result) {
-    _podcast = new Podcast.fromSearchResult(result);
+    podcast = new Podcast.fromSearchResult(result);
     _downloadPodcast(result);
   }
   
@@ -28,48 +31,59 @@ class PodcastPageState extends State<PodcastPage> {
     print(result.feedUrl);
 
     final podcast = await fetchPodcast(result);
-    this.setState(() { this._podcast = podcast; });
+    this.setState(() { this.podcast = podcast; });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new SingleChildScrollView(
-        child: new Column(
-          children: [
-            new PodcastBanner(_podcast.artworkLarge),
-            new Container(
-              alignment: AlignmentDirectional(0.0, 0.0),
-              child: new Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    _buildIntroText(context),
-                  ],
-                )
-              )
-            ),
-            new AnimatedOpacity(
-              opacity: _podcast.loaded ? 1.0 : 0.0,
-              duration: new Duration(milliseconds: 500),
-              child: new Column(
-                children: [
-                  new Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 24.0, 12.0, 0.0),
-                    child: new Align(
-                      alignment: Alignment.topLeft,
-                      child: new Text('Episodes', style: TextStyles.subHeadline(context)) 
-                    ),
+      body: new CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          new SliverAppBar(
+            elevation: 0.0,
+            backgroundColor: new Color.fromARGB(0, 0, 0, 0),
+            expandedHeight: 400.0,
+            flexibleSpace: new PodcastBanner(podcast.artworkLarge, scrollController),
+          ),
+          new SliverPadding(
+            padding: new EdgeInsets.all(0.0),
+            sliver: new SliverList(
+              delegate: new SliverChildListDelegate([
+                new Container(
+                  alignment: AlignmentDirectional(0.0, 0.0),
+                  child: new Padding(
+                    padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildIntroText(context),
+                      ],
+                    )
+                  )
+                ),
+                new AnimatedOpacity(
+                  opacity: podcast.loaded ? 1.0 : 0.0,
+                  duration: new Duration(milliseconds: 1000),
+                  child: new Column(
+                    children: [
+                      new Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 24.0, 12.0, 0.0),
+                        child: new Align(
+                          alignment: Alignment.topLeft,
+                          child: new Text('Episodes', style: TextStyles.subHeadline(context)) 
+                        ),
+                      ),
+                      _buildEpisodeList(context),
+                    ]
                   ),
-                  _buildEpisodeList(context),
-                ]
-              ),
-            )
-          ],
-        )
-      ) 
+                )
+              ]
+            ),
+          ),
+        ),
+      ])
     );
   }
 
@@ -82,11 +96,11 @@ class PodcastPageState extends State<PodcastPage> {
             children: [
               new Align(
                 alignment: Alignment.topLeft,
-                child: new Text(_podcast.name, style: TextStyles.headline(context)) 
+                child: new Text(podcast.name, style: TextStyles.headline(context)) 
               ),
               new Align(
                 alignment: Alignment.topLeft,
-                child: new Text(_podcast.primaryGenre, style: TextStyles.body(context, fontWeight: FontWeight.w700)),
+                child: new Text(podcast.primaryGenre, style: TextStyles.body(context, fontWeight: FontWeight.w700)),
               )
             ],
           ) 
@@ -94,7 +108,7 @@ class PodcastPageState extends State<PodcastPage> {
         new DefaultTextStyle(
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildHtmlText(context, _podcast.description),
+            children: _buildHtmlText(context, podcast.description),
           ),
           style: TextStyles.body(context)
         )
@@ -104,7 +118,7 @@ class PodcastPageState extends State<PodcastPage> {
 
   _buildEpisodeList(BuildContext context) {
     var episodes = new List<Widget>();
-    _podcast.episodes.forEach((ep) => episodes.add(new ListTile(
+    podcast.episodes.forEach((ep) => episodes.add(new ListTile(
       title: new Text(ep.name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
       subtitle: new Text(ep.duration, style: TextStyles.body(context)),
     )));
