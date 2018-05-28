@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:poddy/pages/home_page.dart';
 import 'package:poddy/pages/search_page.dart';
 import 'package:poddy/pages/player_page.dart';
 
 void main() {
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
   runApp(new Poddy());
 }
 
@@ -20,7 +15,7 @@ class Poddy extends StatelessWidget {
       title: 'Poddy',
       color: Colors.white,
       theme: new ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: const Color(0xFFF850DD),
         accentColor: const Color(0xFFF850DD),
       ),
       home: new MainPage(),

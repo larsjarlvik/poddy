@@ -79,7 +79,7 @@ class PodcastPageState extends State<PodcastPage> {
                       _buildEpisodeList(context),
                     ]
                   ),
-                )
+                ),
               ]
             ),
           ),
