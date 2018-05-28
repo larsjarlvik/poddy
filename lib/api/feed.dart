@@ -71,10 +71,26 @@ class Episode {
   });
 
   factory Episode.fromXml(xml.XmlElement item) {
+    var rawDuration = item.findElements('itunes:duration').first.text;
+    var numDuration = int.tryParse(rawDuration);
+    var parsedDuration = '';
+
+    if (numDuration != null) {
+      var hours = ((numDuration / 3600).floor()).toString().padLeft(2, '0') + ':';
+      var minutes = ((numDuration / 60).floor() % 60).toString().padLeft(2, '0') + ':';
+      var seconds = (numDuration % 60).toString().padLeft(2, '0');
+      
+      hours = hours != '00:' ? hours : '';
+
+      parsedDuration = '$hours$minutes$seconds';
+    } else {
+      parsedDuration = rawDuration.substring(0, 3) == '00:' ? rawDuration.substring(3) : rawDuration;
+    }
+
     return new Episode(
       name: item.findElements('title').first.text, 
       url: item.findElements('enclosure').first.getAttribute('url'),
-      duration: item.findElements('itunes:duration').first.text,
+      duration: parsedDuration,
     );
   }
 }
