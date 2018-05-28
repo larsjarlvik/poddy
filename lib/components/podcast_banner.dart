@@ -71,7 +71,7 @@ Widget _buildImage(BuildContext context, String url, double scroll) {
             children: [
               new FadeInImage.assetNetwork(
                 width: double.infinity,
-                placeholder: '',
+                placeholder: 'assets/gradient.png',
                 image: url,
                 fit: BoxFit.fitWidth,
               ),
@@ -86,7 +86,6 @@ Widget _buildImage(BuildContext context, String url, double scroll) {
       new Align(
         alignment: new Alignment(0.95, 0.9),
         child: new FloatingActionButton(
-          highlightElevation: 8.0,
           elevation: floatingElevation,
           child: new Icon(Icons.subscriptions),
           foregroundColor: Colors.white,
