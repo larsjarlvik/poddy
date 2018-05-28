@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:poddy/api/search.dart';
 import 'package:poddy/pages/podcast_page.dart';
+import 'package:poddy/theme/text_styles.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class SearchPageState extends State<SearchPage> {
   final searchController = new TextEditingController();
 
   // State
-  var searchResults = new List<SearchResult>();
+  List<SearchResult> searchResults;
   var isSearching = false;
 
   submitQuery(String value) async {
@@ -24,7 +25,9 @@ class SearchPageState extends State<SearchPage> {
     FocusScope.of(context).requestFocus(new FocusNode());
 
     List<SearchResult> results = await doSearch(value);
-    this.setState(() { this.searchResults = results; this.isSearching = false; });
+    if (this.mounted) {
+      this.setState(() { this.searchResults = results; this.isSearching = false; });
+    }
   }
 
   showPodcast(SearchResult result) {
@@ -42,33 +45,8 @@ class SearchPageState extends State<SearchPage> {
       appBar: buildAppBar(context),
       body: new Column(
         children: [
-          new AnimatedOpacity(
-            opacity: isSearching ? 1.0 : 0.0,
-            duration: new Duration(milliseconds: 1000),
-            child: new Container(
-              height: 2.0,
-              child: new LinearProgressIndicator(
-                backgroundColor: Colors.transparent,
-              ),
-            )
-          ),
-          new Flexible(
-            child: new AnimatedOpacity(
-              opacity: !isSearching? 1.0 : 0.0,
-              duration: new Duration(milliseconds: 1000),
-              child: new ListView.builder(
-                padding: new EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                itemCount: searchResults.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return new ListTile(
-                    leading: new Image.network(searchResults[index].artworkSmall),
-                    title: new Text(searchResults[index].name),
-                    onTap: () => this.showPodcast(searchResults[index]),
-                  );
-                },
-              )
-            )
-          )
+          buildSearchSpinner(context),
+          buildResultList(context)
         ],
       ) 
     );
@@ -94,6 +72,55 @@ class SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
+    );
+  }
+
+  buildSearchSpinner(BuildContext context) {
+    return new AnimatedOpacity(
+      opacity: isSearching ? 1.0 : 0.0,
+      duration: new Duration(milliseconds: 1000),
+      child: new Container(
+        height: 1.5,
+        child: new LinearProgressIndicator(
+          backgroundColor: Colors.transparent,
+        ),
+      )
+    );
+  }
+
+  buildResultList(BuildContext context) {
+    Widget child;
+
+    if (searchResults == null) {
+      child = new Center(
+        child: new Text('Search to discover new podcasts...', style: TextStyles.body(context))
+      );
+    }
+    else if (searchResults.length == 0) {
+      child = new Center(
+        child: new Text('Nothing found...', style: TextStyles.body(context)
+      ));
+    }
+    else {
+      child = new ListView.builder(
+        padding: new EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+        itemCount: searchResults.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new ListTile(
+            leading: new Image.network(searchResults[index].artworkSmall),
+            title: new Text(searchResults[index].name),
+            onTap: () => this.showPodcast(searchResults[index]),
+          );
+        },
+      );
+    }
+
+    return new Flexible(
+      child: new AnimatedOpacity(
+        opacity: !isSearching? 1.0 : 0.0,
+        duration: new Duration(milliseconds: 1000),
+        child: child,
+      )
     );
   }
   

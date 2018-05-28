@@ -31,7 +31,9 @@ class PodcastPageState extends State<PodcastPage> {
     print(result.feedUrl);
 
     final podcast = await fetchPodcast(result);
-    this.setState(() { this.podcast = podcast; });
+    if (this.mounted) {
+      this.setState(() { this.podcast = podcast; });
+    }
   }
 
   @override
