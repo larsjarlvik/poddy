@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html_view/html_parser.dart';
 
-import 'package:poddy/api/search.dart';
 import 'package:poddy/api/feed.dart';
 import 'package:poddy/components/podcast_banner.dart';
+import 'package:poddy/models/search_result.dart';
+import 'package:poddy/models/podcast.dart';
 import 'package:poddy/theme/text_styles.dart';
 
 class PodcastPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class PodcastPage extends StatefulWidget {
   PodcastPageState createState() => new PodcastPageState(searchResult);
 }
 
-
 class PodcastPageState extends State<PodcastPage> {
   final scrollController = new ScrollController();
 
@@ -24,16 +24,23 @@ class PodcastPageState extends State<PodcastPage> {
   
   PodcastPageState(SearchResult result) {
     podcast = new Podcast.fromSearchResult(result);
-    _downloadPodcast(result);
+    downloadPodcast(result);
   }
   
-  _downloadPodcast(SearchResult result) async {
+  downloadPodcast(SearchResult result) async {
     print(result.feedUrl);
 
     final podcast = await fetchPodcast(result);
     if (this.mounted) {
       this.setState(() { this.podcast = podcast; });
     }
+  }
+
+  subscribePodcast() {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text('Subscribed!'),
+      duration: new Duration(seconds: 3),
+    ));
   }
 
   @override
@@ -46,7 +53,11 @@ class PodcastPageState extends State<PodcastPage> {
             elevation: 0.0,
             backgroundColor: new Color.fromARGB(0, 0, 0, 0),
             expandedHeight: 400.0,
-            flexibleSpace: new PodcastBanner(podcast.artworkLarge, scrollController),
+            flexibleSpace: new PodcastBanner(
+              podcast.artworkLarge, 
+              () => subscribePodcast,
+              scrollController,
+            ),
             pinned: true,
           ),
           new SliverPadding(

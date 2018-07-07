@@ -39,7 +39,10 @@ class MainPageState extends State<MainPage> {
   }
 
   setTab(int index) {
-    this.pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    this.pageController.animateToPage(index, 
+      duration: const Duration(milliseconds: 300), 
+      curve: Curves.easeInOut
+    );
   }
 
   @override

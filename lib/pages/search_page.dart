@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:poddy/api/search.dart';
 import 'package:poddy/pages/podcast_page.dart';
 import 'package:poddy/theme/text_styles.dart';
+import 'package:poddy/models/search_result.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -107,7 +108,7 @@ class SearchPageState extends State<SearchPage> {
         itemCount: searchResults.length,
         itemBuilder: (BuildContext context, int index) {
           return new ListTile(
-            leading: new Image.network(searchResults[index].artworkSmall),
+            leading: new Image.network(searchResults[index].artworkSmall, height: 45.0),
             title: new Text(searchResults[index].name),
             onTap: () => this.showPodcast(searchResults[index]),
           );
