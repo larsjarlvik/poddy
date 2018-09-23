@@ -73,7 +73,7 @@ class PodcastPageState extends State<PodcastPage> {
           new SliverAppBar(
             key: new Key(this.subscribed.toString()),
             elevation: 0.0,
-            backgroundColor: new Color.fromARGB(0, 0, 0, 0),
+            backgroundColor: Colors.transparent,
             expandedHeight: 400.0,
             flexibleSpace: new PodcastBanner(podcast.artworkLarge,
               actionIcon: new Icon(this.subscribed ? Icons.delete : Icons.subscriptions),

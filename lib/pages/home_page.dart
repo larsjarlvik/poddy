@@ -89,6 +89,7 @@ class HomePageState extends State<HomePage> {
 
   buildAppBar(BuildContext context) {
     return new AppBar(
+      brightness: Brightness.light,
       elevation: 1.5,
       backgroundColor: Colors.white,
       titleSpacing: 0.0,
