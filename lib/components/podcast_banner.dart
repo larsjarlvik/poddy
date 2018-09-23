@@ -5,25 +5,27 @@ class PodcastBanner extends StatefulWidget {
   final ScrollController scrollController;
   final VoidCallback onActionPressed;
 
-  PodcastBanner(String url, void onActionPressed, ScrollController scrollController) : 
-    url = url, 
-    onActionPressed = onActionPressed,
-    scrollController = scrollController;
+  PodcastBanner(String url, {
+    this.onActionPressed, 
+    this.scrollController
+  }) : url = url;
 
   @override
-  PodcastBannerState createState() => new PodcastBannerState(url, onActionPressed, scrollController);
+  PodcastBannerState createState() => new PodcastBannerState(url, scrollController, 
+    onActionPressed: onActionPressed
+  );
 }
 
 class PodcastBannerState extends State<PodcastBanner> {
   final String url;
-  final dynamic onActionPressed;
+  final GestureTapCallback onActionPressed;
 
   // State
   var scroll = 0.0;
 
-  PodcastBannerState(String url, dynamic onActionPressed, ScrollController scrollController) :
-    url = url,
-    onActionPressed = onActionPressed
+  PodcastBannerState(String url, ScrollController scrollController, {
+    this.onActionPressed, 
+  }) : url = url
   {
     scrollController.addListener(() => 
       this.setState(() => this.scroll = scrollController.offset)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html_view/html_parser.dart';
 
 import 'package:poddy/api/feed.dart';
+import 'package:poddy/storage/subscriptions.dart';
 import 'package:poddy/components/podcast_banner.dart';
 import 'package:poddy/models/search_result.dart';
 import 'package:poddy/models/podcast.dart';
@@ -18,6 +19,7 @@ class PodcastPage extends StatefulWidget {
 
 class PodcastPageState extends State<PodcastPage> {
   final scrollController = new ScrollController();
+  final key = new GlobalKey<ScaffoldState>();
 
   // State
   var podcast = new Podcast();
@@ -36,8 +38,10 @@ class PodcastPageState extends State<PodcastPage> {
     }
   }
 
-  subscribePodcast() {
-    Scaffold.of(context).showSnackBar(new SnackBar(
+  subscribePodcast() async {
+    addSubscription(podcast);
+
+    key.currentState.showSnackBar(new SnackBar(
       content: new Text('Subscribed!'),
       duration: new Duration(seconds: 3),
     ));
@@ -46,6 +50,7 @@ class PodcastPageState extends State<PodcastPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: key,
       body: new CustomScrollView(
         controller: scrollController,
         slivers: [
@@ -53,10 +58,9 @@ class PodcastPageState extends State<PodcastPage> {
             elevation: 0.0,
             backgroundColor: new Color.fromARGB(0, 0, 0, 0),
             expandedHeight: 400.0,
-            flexibleSpace: new PodcastBanner(
-              podcast.artworkLarge, 
-              () => subscribePodcast,
-              scrollController,
+            flexibleSpace: new PodcastBanner(podcast.artworkLarge,
+              onActionPressed: subscribePodcast,
+              scrollController: scrollController,
             ),
             pinned: true,
           ),

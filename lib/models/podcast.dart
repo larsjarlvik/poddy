@@ -51,4 +51,23 @@ class Podcast {
 
     return podcast;
   }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'feedUrl': feedUrl,
+    'creator': creator,
+    'artworkSmall': artworkSmall,
+    'artworkLarge': artworkLarge,
+    'primaryGenre': primaryGenre,
+    'episodes': episodes.map((e) => e.toJson()).toList()
+  };
+
+  Podcast.fromJson(Map json) :
+    name = json['name'],
+    feedUrl = json['feedUrl'],
+    creator = json['creator'],
+    artworkSmall = json['artworkSmall'],
+    artworkLarge = json['artworkLarge'],
+    primaryGenre = json['primaryGenre'],
+    episodes = (json['episodes'] as List).map((e) => Episode.fromJson(e)).toList();
 }

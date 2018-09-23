@@ -32,4 +32,15 @@ class Episode {
       duration: parsedDuration,
     );
   }
+  
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'url': url,
+    'duration': duration,
+  };
+
+  Episode.fromJson(Map json) :
+    name = json['name'],
+    url = json['url'],
+    duration = json['duration'];
 }
