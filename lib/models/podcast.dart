@@ -37,8 +37,7 @@ class Podcast {
     );
   }
 
-  factory Podcast.fromXml(SearchResult result, xml.XmlDocument document) {
-    var podcast = new Podcast.fromSearchResult(result);
+  factory Podcast.fromXml(Podcast podcast, xml.XmlDocument document) {
     var episodes = new List<Episode>();
 
     document.findAllElements('item').forEach((item) =>
@@ -54,6 +53,7 @@ class Podcast {
 
   Map<String, dynamic> toJson() => {
     'name': name,
+    'description': description,
     'feedUrl': feedUrl,
     'creator': creator,
     'artworkSmall': artworkSmall,
@@ -64,10 +64,12 @@ class Podcast {
 
   Podcast.fromJson(Map json) :
     name = json['name'],
+    description = json['description'],
     feedUrl = json['feedUrl'],
     creator = json['creator'],
     artworkSmall = json['artworkSmall'],
     artworkLarge = json['artworkLarge'],
     primaryGenre = json['primaryGenre'],
-    episodes = (json['episodes'] as List).map((e) => Episode.fromJson(e)).toList();
+    episodes = (json['episodes'] as List).map((e) => Episode.fromJson(e)).toList(),
+    loaded = true;
 }

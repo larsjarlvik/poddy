@@ -4,17 +4,16 @@ import 'package:flutter_html_view/html_parser.dart';
 import 'package:poddy/api/feed.dart';
 import 'package:poddy/storage/subscriptions.dart';
 import 'package:poddy/components/podcast_banner.dart';
-import 'package:poddy/models/search_result.dart';
 import 'package:poddy/models/podcast.dart';
 import 'package:poddy/theme/text_styles.dart';
 
 class PodcastPage extends StatefulWidget {
-  final SearchResult searchResult;
+  final Podcast podcast;
 
-  PodcastPage(SearchResult result) : searchResult = result;
+  PodcastPage(Podcast podcast) : podcast = podcast;
 
   @override
-  PodcastPageState createState() => new PodcastPageState(searchResult);
+  PodcastPageState createState() => new PodcastPageState(podcast);
 }
 
 class PodcastPageState extends State<PodcastPage> {
@@ -24,17 +23,17 @@ class PodcastPageState extends State<PodcastPage> {
   // State
   var podcast = new Podcast();
   
-  PodcastPageState(SearchResult result) {
-    podcast = new Podcast.fromSearchResult(result);
-    downloadPodcast(result);
-  }
+  PodcastPageState(Podcast podcast) {
+    this.podcast = podcast;
+    if (!podcast.loaded) {
+      downloadPodcast(podcast);
+    }
+  }5
   
-  downloadPodcast(SearchResult result) async {
-    print(result.feedUrl);
-
-    final podcast = await fetchPodcast(result);
+  downloadPodcast(Podcast podcast) async {
+    final updatedPodcast = await fetchPodcast(podcast);
     if (this.mounted) {
-      this.setState(() { this.podcast = podcast; });
+      this.setState(() { this.podcast = updatedPodcast; });
     }
   }
 

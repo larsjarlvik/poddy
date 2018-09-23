@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:poddy/api/search.dart';
@@ -18,16 +20,17 @@ class HomePageState extends State<HomePage> {
 
   // State
   List<SearchResult> searchResults;
-  var subscriptions = new List<Podcast>();
+  List<Podcast> subscriptions = new List<Podcast>();
   
   var isSearching = false;
 
   getSubscriptions() async {
-    subscriptions = await readSubscriptions();
+    final subs = await readSubscriptions();
+    this.setState(() { this.subscriptions = subs; });
   }
 
   HomePageState() {
-    subscriptions = [];
+    searchResults = null;
     getSubscriptions();
   }
 
@@ -46,10 +49,11 @@ class HomePageState extends State<HomePage> {
   }
 
   showHome() {
-      this.setState(() { this.searchResults = null; this.isSearching = false; });
+    getSubscriptions();
+    this.setState(() { this.searchResults = null; this.isSearching = false; });
   }
 
-  showPodcast(SearchResult result) {
+  showPodcast(Podcast result) {
     Navigator.of(context).push(
       new MaterialPageRoute(
         builder: (context) => new PodcastPage(result)
@@ -57,17 +61,29 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Future<bool> onPopState() async {
+    if (searchResults != null) {
+      showHome();
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: buildAppBar(context),
-      body: new Column(
-        children: [
-          buildSearchSpinner(context),
-          buildResultList(context)
-        ],
-      ) 
+    return new WillPopScope(
+      onWillPop: onPopState,
+      child: new Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: buildAppBar(context),
+        body: new Column(
+          children: [
+            buildSearchSpinner(context),
+            buildResultList(context)
+          ],
+        ) 
+      )
     );
   }
 
@@ -123,7 +139,10 @@ class HomePageState extends State<HomePage> {
         ),
         itemCount: subscriptions.length,
         itemBuilder: (BuildContext context, int index) {
-          return buildPodcastTile(subscriptions[index]);
+          return buildPodcastTile(
+            subscriptions[index],
+            () => showPodcast(subscriptions[index])
+          );
         },
       );
     }
@@ -140,7 +159,7 @@ class HomePageState extends State<HomePage> {
           return new ListTile(
             leading: new Image.network(searchResults[index].artworkSmall, height: 45.0),
             title: new Text(searchResults[index].name),
-            onTap: () => this.showPodcast(searchResults[index]),
+            onTap: () => this.showPodcast(Podcast.fromSearchResult(searchResults[index])),
           );
         },
       );
