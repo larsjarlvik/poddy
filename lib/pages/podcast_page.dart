@@ -28,7 +28,7 @@ class PodcastPageState extends State<PodcastPage> {
     if (!podcast.loaded) {
       downloadPodcast(podcast);
     }
-  }5
+  }
   
   downloadPodcast(Podcast podcast) async {
     final updatedPodcast = await fetchPodcast(podcast);
