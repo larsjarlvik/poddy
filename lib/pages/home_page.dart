@@ -41,7 +41,7 @@ class HomePageState extends State<HomePage> {
           ),
           itemCount: podcasts.length,
           itemBuilder: (BuildContext context, int index) {
-            return podcastTile(podcasts[index]);
+            return buildPodcastTile(podcasts[index]);
           },
         )
       )
