@@ -13,9 +13,19 @@ Future<File> get _localFile async {
   return new File('$path/$_fileName');
 }
 
-addSubscription(Podcast podcasts) async {
+addSubscription(Podcast podcast) async {
   final existing = await readSubscriptions();
-  existing.add(podcasts);
+  existing.add(podcast);
+
+  final encoded = json.encode(existing);
+  final file = await _localFile;
+
+  file.writeAsString(encoded);
+}
+
+removeSubscription(Podcast podcast) async {
+  final existing = await readSubscriptions();
+  existing.remove(existing.firstWhere((s) => s.id == podcast.id));
 
   final encoded = json.encode(existing);
   final file = await _localFile;
@@ -35,3 +45,9 @@ Future<List<Podcast>> readSubscriptions() async {
 
   return mapped;
 }
+
+Future<bool> containsPodcast(Podcast podcast) async {
+  final subscriptions = await readSubscriptions();
+  return subscriptions.any((s) => s.id == podcast.id);
+}
+

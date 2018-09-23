@@ -1,5 +1,6 @@
 
 class SearchResult {
+  final int id;
   final String name;
   final String creator;
   final String artworkSmall;
@@ -7,10 +8,11 @@ class SearchResult {
   final String feedUrl;
   final String primaryGenre;
 
-  SearchResult({ this.name, this.creator, this.artworkSmall, this.artworkLarge, this.feedUrl, this.primaryGenre });
+  SearchResult({ this.id, this.name, this.creator, this.artworkSmall, this.artworkLarge, this.feedUrl, this.primaryGenre });
 
   factory SearchResult.fromJson(Map<String, dynamic> json) {
     return new SearchResult(
+      id: json['collectionId'],
       name: json['trackName'],
       creator: json['artistName'],
       artworkSmall: json['artworkUrl100'],

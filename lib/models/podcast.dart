@@ -4,6 +4,7 @@ import 'search_result.dart';
 import 'episode.dart';
 
 class Podcast {
+  final int id;
   final String name;
   final String feedUrl;
   final String creator;
@@ -15,7 +16,7 @@ class Podcast {
   List<Episode> episodes;
   String description;
 
-  Podcast({ this.name, this.feedUrl,
+  Podcast({ this.id, this.name, this.feedUrl,
     this.creator: '',
     this.artworkSmall: '',
     this.artworkLarge: '',
@@ -27,6 +28,7 @@ class Podcast {
 
   factory Podcast.fromSearchResult(SearchResult result) {
     return new Podcast(
+      id: result.id,
       name: result.name,
       feedUrl: result.feedUrl,
       creator: result.creator,
@@ -52,6 +54,7 @@ class Podcast {
   }
 
   Map<String, dynamic> toJson() => {
+    'id': id,
     'name': name,
     'description': description,
     'feedUrl': feedUrl,
@@ -63,6 +66,7 @@ class Podcast {
   };
 
   Podcast.fromJson(Map json) :
+    id = json['id'],
     name = json['name'],
     description = json['description'],
     feedUrl = json['feedUrl'],

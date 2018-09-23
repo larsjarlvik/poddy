@@ -4,14 +4,17 @@ class PodcastBanner extends StatefulWidget {
   final String url;
   final ScrollController scrollController;
   final VoidCallback onActionPressed;
+  final Icon actionIcon;
 
   PodcastBanner(String url, {
+    this.actionIcon,
     this.onActionPressed, 
-    this.scrollController
+    this.scrollController,
   }) : url = url;
 
   @override
   PodcastBannerState createState() => new PodcastBannerState(url, scrollController, 
+    actionIcon: actionIcon,
     onActionPressed: onActionPressed
   );
 }
@@ -19,11 +22,13 @@ class PodcastBanner extends StatefulWidget {
 class PodcastBannerState extends State<PodcastBanner> {
   final String url;
   final GestureTapCallback onActionPressed;
+  final Icon actionIcon;
 
   // State
   var scroll = 0.0;
 
   PodcastBannerState(String url, ScrollController scrollController, {
+    this.actionIcon,
     this.onActionPressed, 
   }) : url = url
   {
@@ -78,7 +83,7 @@ class PodcastBannerState extends State<PodcastBanner> {
           alignment: new Alignment(0.95, 0.9),
           child: new FloatingActionButton(
             elevation: floatingElevation,
-            child: new Icon(Icons.subscriptions),
+            child: actionIcon,
             foregroundColor: Colors.white,
             backgroundColor: new Color.fromARGB(floatingAlpha, accent.red, accent.green, accent.blue) ,
             onPressed: () => onActionPressed(),

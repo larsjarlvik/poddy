@@ -22,12 +22,20 @@ class PodcastPageState extends State<PodcastPage> {
 
   // State
   var podcast = new Podcast();
+  var subscribed = false;
   
   PodcastPageState(Podcast podcast) {
     this.podcast = podcast;
+    setSubscribed();
+
     if (!podcast.loaded) {
       downloadPodcast(podcast);
     }
+  }
+
+  setSubscribed() async {
+    final subscribed = await containsPodcast(this.podcast);
+    this.setState(() { this.subscribed = subscribed; });
   }
   
   downloadPodcast(Podcast podcast) async {
@@ -37,11 +45,20 @@ class PodcastPageState extends State<PodcastPage> {
     }
   }
 
-  subscribePodcast() async {
-    addSubscription(podcast);
+  toggleSubscibe() async {
+    var message = '';
+    final subscribed = await containsPodcast(this.podcast);
+
+    if (subscribed) {
+      removeSubscription(podcast);
+      message = 'Removed!';
+    } else {
+      addSubscription(podcast);
+      message = 'Subscribed!';
+    }
 
     key.currentState.showSnackBar(new SnackBar(
-      content: new Text('Subscribed!'),
+      content: new Text(message),
       duration: new Duration(seconds: 3),
     ));
   }
@@ -54,11 +71,13 @@ class PodcastPageState extends State<PodcastPage> {
         controller: scrollController,
         slivers: [
           new SliverAppBar(
+            key: new Key(this.subscribed.toString()),
             elevation: 0.0,
             backgroundColor: new Color.fromARGB(0, 0, 0, 0),
             expandedHeight: 400.0,
             flexibleSpace: new PodcastBanner(podcast.artworkLarge,
-              onActionPressed: subscribePodcast,
+              actionIcon: new Icon(this.subscribed ? Icons.delete : Icons.subscriptions),
+              onActionPressed: toggleSubscibe,
               scrollController: scrollController,
             ),
             pinned: true,
