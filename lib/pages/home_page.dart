@@ -30,7 +30,6 @@ class HomePageState extends State<HomePage> {
 
   HomePageState() {
     searchResults = null;
-    getSubscriptions();
   }
 
   submitQuery(String value) async {
@@ -47,7 +46,6 @@ class HomePageState extends State<HomePage> {
   }
 
   showHome() {
-    getSubscriptions();
     this.setState(() { this.searchResults = null; this.isSearching = false; });
   }
 
@@ -70,6 +68,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    getSubscriptions();
+
     return new WillPopScope(
       onWillPop: onPopState,
       child: new Scaffold(
