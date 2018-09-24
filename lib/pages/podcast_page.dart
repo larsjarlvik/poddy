@@ -23,9 +23,9 @@ class PodcastPageState extends State<PodcastPage> {
   // State
   var podcast = new Podcast();
   var subscribed = false;
-  
-  PodcastPageState(Podcast podcast) {
-    this.podcast = podcast;
+
+  PodcastPageState(Podcast p) {
+    podcast = p;
     setSubscribed();
 
     if (!podcast.loaded) {
@@ -34,20 +34,20 @@ class PodcastPageState extends State<PodcastPage> {
   }
 
   setSubscribed() async {
-    final subscribed = await containsPodcast(this.podcast);
-    this.setState(() { this.subscribed = subscribed; });
+    final isSubscribed = await containsPodcast(podcast);
+    setState(() { subscribed = isSubscribed; });
   }
-  
+
   downloadPodcast(Podcast podcast) async {
     final updatedPodcast = await fetchPodcast(podcast);
-    if (this.mounted) {
-      this.setState(() { this.podcast = updatedPodcast; });
+    if (mounted) {
+      setState(() { podcast = updatedPodcast; });
     }
   }
 
   toggleSubscibe() async {
     var message = '';
-    final subscribed = await containsPodcast(this.podcast);
+    final subscribed = await containsPodcast(podcast);
 
     if (subscribed) {
       removeSubscription(podcast);
@@ -71,12 +71,12 @@ class PodcastPageState extends State<PodcastPage> {
         controller: scrollController,
         slivers: [
           new SliverAppBar(
-            key: new Key(this.subscribed.toString()),
+            key: new Key(subscribed.toString()),
             elevation: 0.0,
             backgroundColor: Colors.transparent,
             expandedHeight: 400.0,
             flexibleSpace: new PodcastBanner(podcast.artworkLarge,
-              actionIcon: new Icon(this.subscribed ? Icons.delete : Icons.subscriptions),
+              actionIcon: new Icon(subscribed ? Icons.delete : Icons.subscriptions),
               onActionPressed: toggleSubscibe,
               scrollController: scrollController,
             ),
@@ -108,7 +108,7 @@ class PodcastPageState extends State<PodcastPage> {
                         padding: const EdgeInsets.fromLTRB(20.0, 24.0, 12.0, 0.0),
                         child: new Align(
                           alignment: Alignment.topLeft,
-                          child: new Text('Episodes', style: TextStyles.subHeadline(context)) 
+                          child: new Text('Episodes', style: TextStyles.subHeadline(context))
                         ),
                       ),
                       _buildEpisodeList(context),
@@ -132,14 +132,14 @@ class PodcastPageState extends State<PodcastPage> {
             children: [
               new Align(
                 alignment: Alignment.topLeft,
-                child: new Text(podcast.name, style: TextStyles.headline(context)) 
+                child: new Text(podcast.name, style: TextStyles.headline(context))
               ),
               new Align(
                 alignment: Alignment.topLeft,
                 child: new Text(podcast.primaryGenre, style: TextStyles.body(context, fontWeight: FontWeight.w700)),
               )
             ],
-          ) 
+          )
         ),
         new DefaultTextStyle(
           child: new Column(

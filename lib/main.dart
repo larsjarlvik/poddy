@@ -31,14 +31,14 @@ class MainPageState extends State<MainPage> {
   PageController pageController;
 
   MainPageState() {
-    this.pageController =  new PageController(
+    pageController = new PageController(
       initialPage: page,
     );
   }
 
   setTab(int index) {
-    this.pageController.animateToPage(index, 
-      duration: const Duration(milliseconds: 300), 
+    pageController.animateToPage(index,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut
     );
   }
