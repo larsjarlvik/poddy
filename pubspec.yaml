@@ -19,6 +19,7 @@ flutter:
 
   assets:
     - assets/gradient.png
+    - assets/poddy.png
 
   fonts:
     - family: Norwester
