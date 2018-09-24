@@ -83,29 +83,17 @@ class PodcastPageState extends State<PodcastPage> {
             pinned: true,
           ),
           new SliverPadding(
-            padding: new EdgeInsets.all(0.0),
+            padding: new EdgeInsets.all(10.0),
             sliver: new SliverList(
               delegate: new SliverChildListDelegate([
-                new Container(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: new Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _buildIntroText(context),
-                      ],
-                    )
-                  )
-                ),
+                _buildIntroText(context),
                 new AnimatedOpacity(
                   opacity: podcast.loaded ? 1.0 : 0.0,
                   duration: new Duration(milliseconds: 1000),
                   child: new Column(
                     children: [
                       new Padding(
-                        padding: const EdgeInsets.fromLTRB(20.0, 24.0, 12.0, 0.0),
+                        padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 4.0),
                         child: new Align(
                           alignment: Alignment.topLeft,
                           child: new Text('Episodes', style: TextStyles.subHeadline(context))
@@ -127,7 +115,7 @@ class PodcastPageState extends State<PodcastPage> {
     return new Column(
       children: [
         new Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 12.0),
+          padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
           child: new Column(
             children: [
               new Align(
@@ -153,15 +141,12 @@ class PodcastPageState extends State<PodcastPage> {
   }
 
   _buildEpisodeList(BuildContext context) {
-    var episodes = new List<Widget>();
-    podcast.episodes.forEach((ep) => episodes.add(new ListTile(
-      title: new Text(ep.name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
-      subtitle: new Text(ep.duration, style: TextStyles.body(context)),
-    )));
-
-    return new Padding(
-      padding: new EdgeInsets.all(4.0),
-      child: new Column(children: episodes)
+    return new Column(
+      children: List.generate(podcast.episodes.length, (index) => new ListTile(
+        contentPadding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+        title: new Text(podcast.episodes[index].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
+        subtitle: new Text(podcast.episodes[index].duration, style: TextStyles.body(context)),
+      ))
     );
   }
 
