@@ -17,11 +17,17 @@ enum PageState {
 }
 
 class HomePage extends StatefulWidget {
+  final RouteObserver routeObserver;
+
+  HomePage(RouteObserver routeObserver) : routeObserver = routeObserver;
+
   @override
-  HomePageState createState() => new HomePageState();
+  HomePageState createState() => new HomePageState(routeObserver);
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with RouteAware {
+  final RouteObserver routeObserver;
+
   // State
   List<SearchResult> searchResults;
   List<Podcast> subscriptions = new List<Podcast>();
@@ -33,8 +39,26 @@ class HomePageState extends State<HomePage> {
     setState(() { subscriptions = subs; });
   }
 
-  HomePageState() {
+  HomePageState(RouteObserver routeObserver) :
+    routeObserver = routeObserver {
     searchResults = null;
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getSubscriptions();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void didPopNext() {
+    getSubscriptions();
   }
 
   submitQuery(String value) async {
@@ -51,17 +75,13 @@ class HomePageState extends State<HomePage> {
   }
 
   showPodcast(Podcast result) {
-    Navigator.of(context).push(
-      new MaterialPageRoute(
-        builder: (context) => new PodcastPage(result)
-      )
-    );
+    Navigator.push(context, new MaterialPageRoute(
+      builder: (context) => new PodcastPage(result)
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    getSubscriptions();
-
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: new SearchBar(
