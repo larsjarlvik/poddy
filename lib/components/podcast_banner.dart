@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PodcastBanner extends StatefulWidget {
@@ -8,12 +9,12 @@ class PodcastBanner extends StatefulWidget {
 
   PodcastBanner(String url, {
     this.actionIcon,
-    this.onActionPressed, 
+    this.onActionPressed,
     this.scrollController,
   }) : url = url;
 
   @override
-  PodcastBannerState createState() => new PodcastBannerState(url, scrollController, 
+  PodcastBannerState createState() => new PodcastBannerState(url, scrollController,
     actionIcon: actionIcon,
     onActionPressed: onActionPressed
   );
@@ -29,10 +30,10 @@ class PodcastBannerState extends State<PodcastBanner> {
 
   PodcastBannerState(String url, ScrollController scrollController, {
     this.actionIcon,
-    this.onActionPressed, 
+    this.onActionPressed,
   }) : url = url
   {
-    scrollController.addListener(() => 
+    scrollController.addListener(() =>
       setState(() => scroll = scrollController.offset)
     );
   }
@@ -65,10 +66,10 @@ class PodcastBannerState extends State<PodcastBanner> {
             color: new Color.fromARGB(240, 0, 0, 0),
             child: new Stack(
               children: [
-                new FadeInImage.assetNetwork(
+                new CachedNetworkImage(
+                  placeholder: new Image.asset('assets/gradient.png'),
+                  imageUrl: url,
                   width: double.infinity,
-                  placeholder: 'assets/gradient.png',
-                  image: url,
                   fit: BoxFit.fitWidth,
                 ),
                 new Container(

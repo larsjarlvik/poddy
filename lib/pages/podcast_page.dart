@@ -47,9 +47,9 @@ class PodcastPageState extends State<PodcastPage> {
 
   toggleSubscibe() async {
     var message = '';
-    final subscribed = await containsPodcast(podcast);
+    final isSubscribed = await containsPodcast(podcast);
 
-    if (subscribed) {
+    if (isSubscribed) {
       removeSubscription(podcast);
       message = 'Removed!';
     } else {
@@ -57,6 +57,7 @@ class PodcastPageState extends State<PodcastPage> {
       message = 'Subscribed!';
     }
 
+    setState(() { subscribed = !isSubscribed; });
     key.currentState.showSnackBar(new SnackBar(
       content: new Text(message),
       duration: new Duration(seconds: 3),
@@ -86,28 +87,18 @@ class PodcastPageState extends State<PodcastPage> {
             padding: new EdgeInsets.all(10.0),
             sliver: new SliverList(
               delegate: new SliverChildListDelegate([
-                _buildIntroText(context),
-                new AnimatedOpacity(
-                  opacity: podcast.loaded ? 1.0 : 0.0,
-                  duration: new Duration(milliseconds: 1000),
-                  child: new Column(
-                    children: [
-                      new Padding(
-                        padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 4.0),
-                        child: new Align(
-                          alignment: Alignment.topLeft,
-                          child: new Text('Episodes', style: TextStyles.subHeadline(context))
-                        ),
-                      ),
-                      _buildEpisodeList(context),
-                    ]
-                  ),
-                ),
-              ]
-            ),
+                _buildIntroText(context)
+              ])
+            )
           ),
-        ),
-      ])
+          new SliverPadding(
+            padding: new EdgeInsets.all(10.0),
+            sliver: new SliverList(
+              delegate: _buildEpisodeList()
+            )
+          ),
+        ]
+      )
     );
   }
 
@@ -140,16 +131,6 @@ class PodcastPageState extends State<PodcastPage> {
     );
   }
 
-  _buildEpisodeList(BuildContext context) {
-    return new Column(
-      children: List.generate(podcast.episodes.length, (index) => new ListTile(
-        contentPadding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-        title: new Text(podcast.episodes[index].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
-        subtitle: new Text(podcast.episodes[index].duration, style: TextStyles.body(context)),
-      ))
-    );
-  }
-
   _buildHtmlText(BuildContext context, String htmlString) {
       final htmlParser = new HtmlParser();
       final nodes = htmlParser.HParse(htmlString);
@@ -165,5 +146,16 @@ class PodcastPageState extends State<PodcastPage> {
       }
 
       return nodes;
+  }
+
+  _buildEpisodeList() {
+    return new SliverChildBuilderDelegate(
+      (BuildContext context, int index) => new ListTile(
+        contentPadding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+        title: new Text(podcast.episodes[index].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
+        subtitle: new Text(podcast.episodes[index].duration, style: TextStyles.body(context)),
+      ),
+      childCount: podcast.episodes.length
+    );
   }
 }

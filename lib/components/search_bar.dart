@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-
 class SearchBar extends StatefulWidget implements PreferredSizeWidget {
   final ValueChanged<String> onSearch;
   final VoidCallback back;
