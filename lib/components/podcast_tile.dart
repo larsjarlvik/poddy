@@ -6,9 +6,11 @@ Widget buildPodcastTile (Podcast podcast, VoidCallback onTap) {
   return new Card(
     elevation: 1.5,
     child: Stack(children: [
-      new CachedNetworkImage(
-        placeholder: new Icon(Icons.photo, color: new Color.fromARGB(255, 56, 56, 56)),
-        imageUrl: podcast.artworkLarge
+      new Center(
+        child:  new CachedNetworkImage(
+          placeholder: new Icon(Icons.radio, color: new Color.fromARGB(180, 56, 56, 56)),
+          imageUrl: podcast.artworkLarge,
+        ),
       ),
       new Positioned.fill(
         child: new Material(
