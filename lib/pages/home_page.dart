@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:poddy/api/search.dart';
@@ -80,6 +82,11 @@ class HomePageState extends State<HomePage> with RouteAware {
     ));
   }
 
+  Future<Null> handleRefresh() async {
+    await refreshPodcasts();
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -89,11 +96,14 @@ class HomePageState extends State<HomePage> with RouteAware {
         () => setState(() { pageState = PageState.ShowSearch; }),
         () => setState(() { searchResults = null; pageState = PageState.Home; }),
       ),
-      body: new Column(
-        children: [
-          buildSearchSpinner(context),
-          buildPageContent(context)
-        ],
+      body: RefreshIndicator(
+        onRefresh: handleRefresh,
+          child: new Column(
+          children: [
+            buildSearchSpinner(context),
+            buildPageContent(context)
+          ],
+        )
       )
     );
   }

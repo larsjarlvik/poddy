@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:poddy/api/feed.dart';
 import 'package:poddy/models/podcast.dart';
 
 const String _fileName = 'subscriptions.json';
@@ -19,8 +20,7 @@ addSubscription(Podcast podcast) async {
 
   final encoded = json.encode(existing);
   final file = await _localFile;
-
-  file.writeAsString(encoded);
+  await file.writeAsString(encoded);
 }
 
 removeSubscription(Podcast podcast) async {
@@ -29,8 +29,18 @@ removeSubscription(Podcast podcast) async {
 
   final encoded = json.encode(existing);
   final file = await _localFile;
+  await file.writeAsString(encoded);
+}
 
-  file.writeAsString(encoded);
+updateSubscription(Podcast podcast) async {
+  final existing = await readSubscriptions();
+  final index = existing.indexWhere((s) => s.id == podcast.id);
+
+  existing[index] = podcast;
+
+  final encoded = json.encode(existing);
+  final file = await _localFile;
+  await file.writeAsString(encoded);
 }
 
 Future<List<Podcast>> readSubscriptions() async {
@@ -51,3 +61,15 @@ Future<bool> containsPodcast(Podcast podcast) async {
   return subscriptions.any((s) => s.id == podcast.id);
 }
 
+Future refreshPodcasts() async {
+  final subscriptions = await readSubscriptions();
+
+  for(var s in subscriptions) {
+    try {
+      final updated = await fetchPodcast(s);
+      await updateSubscription(updated);
+    } catch (e) {
+      print('Failed to update ${s.feedUrl}');
+    }
+  }
+}
