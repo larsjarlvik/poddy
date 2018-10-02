@@ -173,8 +173,8 @@ class PodcastPageState extends State<PodcastPage> {
         Divider(height: 4.0) :
         ListTile(
           contentPadding: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
-          title: new Text(podcast.episodes[index].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
-          subtitle: new Text(podcast.episodes[index].duration, style: TextStyles.body(context)),
+          title: new Text(podcast.episodes[index ~/ 2].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
+          subtitle: new Text(podcast.episodes[index ~/ 2].duration, style: TextStyles.body(context)),
           trailing: new IconButton(
             color: Theme.of(context).accentColor,
             icon: new Icon(Icons.play_circle_outline),
