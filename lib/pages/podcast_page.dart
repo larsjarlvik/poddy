@@ -87,8 +87,23 @@ class PodcastPageState extends State<PodcastPage> {
             padding: new EdgeInsets.all(10.0),
             sliver: new SliverList(
               delegate: new SliverChildListDelegate([
-                _buildIntroText(context)
+                _buildIntroText(context),
               ])
+            )
+          ),
+          new SliverPadding(
+            padding: new EdgeInsets.fromLTRB(18.0, 20.0, 18.0, 0.0),
+            sliver: new SliverList(
+              delegate: new SliverChildListDelegate([
+                new AnimatedOpacity(
+                  opacity: podcast.loaded ? 1.0 : 0.0,
+                  duration: new Duration(milliseconds: 300),
+                  child: new Align(
+                    alignment: Alignment.topLeft,
+                    child: new Text('Episodes', style: TextStyles.subHeadline(context))
+                  ),
+                ),
+              ]),
             )
           ),
           new SliverPadding(
@@ -120,12 +135,16 @@ class PodcastPageState extends State<PodcastPage> {
             ],
           )
         ),
-        new DefaultTextStyle(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildHtmlText(context, podcast.description),
-          ),
-          style: TextStyles.body(context)
+        new AnimatedOpacity(
+          opacity: podcast.loaded ? 1.0 : 0.0,
+          duration: new Duration(milliseconds: 300),
+          child: new DefaultTextStyle(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _buildHtmlText(context, podcast.description),
+            ),
+            style: TextStyles.body(context)
+          )
         )
       ]
     );
