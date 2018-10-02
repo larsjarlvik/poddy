@@ -86,7 +86,7 @@ class PodcastBannerState extends State<PodcastBanner> {
             elevation: floatingElevation,
             child: actionIcon,
             foregroundColor: Colors.white,
-            backgroundColor: new Color.fromARGB(floatingAlpha, accent.red, accent.green, accent.blue) ,
+            backgroundColor: new Color.fromARGB(floatingAlpha, accent.red, accent.green, accent.blue),
             onPressed: () => onActionPressed(),
           ),
         )

@@ -92,7 +92,7 @@ class PodcastPageState extends State<PodcastPage> {
             )
           ),
           new SliverPadding(
-            padding: new EdgeInsets.fromLTRB(18.0, 20.0, 18.0, 0.0),
+            padding: new EdgeInsets.fromLTRB(18.0, 26.0, 18.0, 0.0),
             sliver: new SliverList(
               delegate: new SliverChildListDelegate([
                 new AnimatedOpacity(
@@ -107,7 +107,7 @@ class PodcastPageState extends State<PodcastPage> {
             )
           ),
           new SliverPadding(
-            padding: new EdgeInsets.all(10.0),
+            padding: new EdgeInsets.all(18.0),
             sliver: new SliverList(
               delegate: _buildEpisodeList()
             )
@@ -169,12 +169,19 @@ class PodcastPageState extends State<PodcastPage> {
 
   _buildEpisodeList() {
     return new SliverChildBuilderDelegate(
-      (BuildContext context, int index) => new ListTile(
-        contentPadding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-        title: new Text(podcast.episodes[index].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
-        subtitle: new Text(podcast.episodes[index].duration, style: TextStyles.body(context)),
-      ),
-      childCount: podcast.episodes.length
+      (BuildContext context, int index) => index.isEven ?
+        Divider(height: 4.0) :
+        ListTile(
+          contentPadding: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
+          title: new Text(podcast.episodes[index].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
+          subtitle: new Text(podcast.episodes[index].duration, style: TextStyles.body(context)),
+          trailing: new IconButton(
+            color: Theme.of(context).accentColor,
+            icon: new Icon(Icons.play_circle_outline),
+            onPressed: () {},
+          ),
+        ),
+      childCount: podcast.episodes.length * 2
     );
   }
 }
