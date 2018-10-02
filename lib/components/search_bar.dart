@@ -21,17 +21,27 @@ class SearchBar extends StatefulWidget implements PreferredSizeWidget {
 
 class SearchBarState extends State<SearchBar> {
   final searchController = new TextEditingController();
+  final searchFocus = FocusNode();
   final ValueChanged<String> onSearch;
   final VoidCallback back;
   final VoidCallback search;
 
   // State
   bool showSearch = false;
+  bool showClearIcon = false;
 
   SearchBarState(ValueChanged<String> onSearch, VoidCallback search, VoidCallback back) :
     onSearch = onSearch,
     search = search,
     back = back;
+
+  @override
+  initState() {
+    super.initState();
+    searchController.addListener(() {
+      setState(() { showClearIcon = searchController.text.length > 0; });
+    });
+  }
 
   @override
   PreferredSizeWidget build(BuildContext context) {
@@ -91,7 +101,10 @@ class SearchBarState extends State<SearchBar> {
         controller: searchController,
         onSubmitted: onSearch,
         autofocus: true,
+        focusNode: searchFocus,
+        textInputAction: TextInputAction.search,
         decoration: new InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 0.0),
           hintText: 'Type to search podcasts',
           enabledBorder: new UnderlineInputBorder(
             borderSide: new BorderSide(style: BorderStyle.none)
@@ -99,6 +112,18 @@ class SearchBarState extends State<SearchBar> {
           focusedBorder: new UnderlineInputBorder(
             borderSide: new BorderSide(style: BorderStyle.none)
           ),
+          suffixIcon: new AnimatedOpacity(
+            opacity: showClearIcon ? 1.0 : 0.0,
+            duration: new Duration(milliseconds: 200),
+            child: new IconButton(
+              color: Color.fromARGB(255, 56, 56, 56),
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                searchController.clear();
+                FocusScope.of(context).requestFocus(searchFocus);
+              }
+            ),
+          ) ,
         ),
       ),
     );
