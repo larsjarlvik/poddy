@@ -33,14 +33,18 @@ removeSubscription(Podcast podcast) async {
 }
 
 updateSubscription(Podcast podcast) async {
-  final existing = await readSubscriptions();
-  final index = existing.indexWhere((s) => s.id == podcast.id);
+  try {
+    final existing = await readSubscriptions();
+    final index = existing.indexWhere((s) => s.id == podcast.id);
 
-  existing[index] = podcast;
+    existing[index] = podcast;
 
-  final encoded = json.encode(existing);
-  final file = await _localFile;
-  await file.writeAsString(encoded);
+    final encoded = json.encode(existing);
+    final file = await _localFile;
+    await file.writeAsString(encoded);
+  } catch (e) {
+    print('Failed to update ${podcast.feedUrl}');
+  }
 }
 
 Future<List<Podcast>> readSubscriptions() async {
@@ -61,15 +65,12 @@ Future<bool> containsPodcast(Podcast podcast) async {
   return subscriptions.any((s) => s.id == podcast.id);
 }
 
+Future refreshPodcast(Podcast podcast) async {
+  final updated = await fetchPodcast(podcast);
+  await updateSubscription(updated);
+}
+
 Future refreshPodcasts() async {
   final subscriptions = await readSubscriptions();
-
-  for(var s in subscriptions) {
-    try {
-      final updated = await fetchPodcast(s);
-      await updateSubscription(updated);
-    } catch (e) {
-      print('Failed to update ${s.feedUrl}');
-    }
-  }
+  await Future.wait(subscriptions.map((s) => refreshPodcast(s)));
 }
