@@ -121,6 +121,7 @@ class SearchBarState extends State<SearchBar> {
               onPressed: () {
                 searchController.clear();
                 FocusScope.of(context).requestFocus(searchFocus);
+                search();
               }
             ),
           ) ,
