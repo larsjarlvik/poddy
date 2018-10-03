@@ -57,7 +57,7 @@ class SearchBarState extends State<SearchBar> {
   }
 
   toggleShowSearch() {
-    setState(() => showSearch = !showSearch);
+    setState(() { showSearch = !showSearch; });
     if (!showSearch) {
       back();
       searchController.clear();
@@ -100,8 +100,8 @@ class SearchBarState extends State<SearchBar> {
       child: new TextField(
         controller: searchController,
         onSubmitted: onSearch,
-        autofocus: true,
         focusNode: searchFocus,
+        autofocus: true,
         textInputAction: TextInputAction.search,
         decoration: new InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 0.0),
@@ -132,6 +132,7 @@ class SearchBarState extends State<SearchBar> {
 
   @override
   void dispose() {
+    searchFocus.dispose();
     searchController.dispose();
     super.dispose();
   }

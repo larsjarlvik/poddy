@@ -169,7 +169,7 @@ class HomePageState extends State<HomePage> with RouteAware {
       itemCount: searchResults.length,
       itemBuilder: (BuildContext context, int index) {
         return new ListTile(
-          leading: new Image.network(searchResults[index].artworkSmall, height: 45.0),
+          leading: new Image.network(searchResults[index].artworkSmall, height: 45.0, width: 45.0),
           title: new Text(searchResults[index].name),
           onTap: () => showPodcast(Podcast.fromSearchResult(searchResults[index])),
         );
