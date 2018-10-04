@@ -33,9 +33,11 @@ class PodcastBannerState extends State<PodcastBanner> {
     this.onActionPressed,
   }) : url = url
   {
-    scrollController.addListener(() =>
-      setState(() => scroll = scrollController.offset)
-    );
+    scrollController.addListener(() {
+      if (mounted) {
+        setState(() => scroll = scrollController.offset);
+      }
+    });
   }
 
   @override

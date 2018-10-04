@@ -195,4 +195,10 @@ class PodcastPageState extends State<PodcastPage> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 }
