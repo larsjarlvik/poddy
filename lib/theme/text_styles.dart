@@ -26,4 +26,14 @@ class TextStyles {
       fontWeight: fontWeight,
     );
   }
+
+  static TextStyle small(BuildContext context, {
+    fontWeight: FontWeight.w300
+  }) {
+    return Theme.of(context).textTheme.body1.copyWith(
+      fontSize: 13.0,
+      height: 1.4,
+      fontWeight: fontWeight,
+    );
+  }
 }

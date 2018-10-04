@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html_view/html_parser.dart';
+import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:poddy/api/feed.dart';
+import 'package:poddy/models/episode.dart';
 import 'package:poddy/storage/subscriptions.dart';
 import 'package:poddy/components/podcast_banner.dart';
 import 'package:poddy/models/podcast.dart';
@@ -171,17 +174,25 @@ class PodcastPageState extends State<PodcastPage> {
     return new SliverChildBuilderDelegate(
       (BuildContext context, int index) => index.isEven ?
         Divider(height: 4.0) :
-        ListTile(
-          contentPadding: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
-          title: new Text(podcast.episodes[index ~/ 2].name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
-          subtitle: new Text(podcast.episodes[index ~/ 2].duration, style: TextStyles.body(context)),
-          trailing: new IconButton(
-            color: Theme.of(context).accentColor,
-            icon: new Icon(Icons.play_circle_outline),
-            onPressed: () {},
-          ),
-        ),
+        _buildEpisode(podcast.episodes[index ~/ 2]),
       childCount: podcast.episodes.length * 2
+    );
+  }
+
+  _buildEpisode(Episode episode) {
+    final displayDate = DateTime.now().difference(episode.pubDate).inDays > 30
+      ? new DateFormat('yyyy-MM-dd').format(episode.pubDate)
+      : timeago.format(episode.pubDate);
+
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
+      title: new Text(episode.name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
+      subtitle: new Text("${episode.duration} · ${displayDate}", style: TextStyles.small(context)),
+      trailing: new IconButton(
+        color: Theme.of(context).accentColor,
+        icon: new Icon(Icons.play_circle_outline),
+        onPressed: () {},
+      ),
     );
   }
 }
