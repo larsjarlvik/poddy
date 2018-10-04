@@ -1,3 +1,5 @@
+![build status](https://travis-ci.org/larsjarlvik/poddy.svg?branch=master)
+
 # Poddy
 A simple podcast player in the jungle of over complicated podcast players.
 
