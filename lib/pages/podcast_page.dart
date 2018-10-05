@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html_view/html_parser.dart';
 import 'package:intl/intl.dart';
+import 'package:poddy/services/player.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:poddy/api/feed.dart';
@@ -187,11 +188,11 @@ class PodcastPageState extends State<PodcastPage> {
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
       title: new Text(episode.name, style: TextStyles.body(context, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
-      subtitle: new Text("${episode.duration} · ${displayDate}", style: TextStyles.small(context)),
+      subtitle: new Text("${episode.duration} · $displayDate", style: TextStyles.small(context)),
       trailing: new IconButton(
         color: Theme.of(context).accentColor,
         icon: new Icon(Icons.play_circle_outline),
-        onPressed: () {},
+        onPressed: () { new Player().play(episode); },
       ),
     );
   }
