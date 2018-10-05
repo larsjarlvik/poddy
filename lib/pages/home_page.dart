@@ -84,6 +84,7 @@ class HomePageState extends State<HomePage> with RouteAware {
 
   Future<Null> handleRefresh() async {
     await refreshPodcasts();
+    await getSubscriptions();
     return null;
   }
 
