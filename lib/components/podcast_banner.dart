@@ -51,7 +51,7 @@ class PodcastBannerState extends State<PodcastBanner> {
   }
 
   Widget _buildImage(BuildContext context) {
-    final heightMultiplier = (400 - scroll >= 60.0 ? 400 - scroll : 60.0) - 60.0;
+    final heightMultiplier = (400 - scroll >= 0.0 ? 400 - scroll : 0.0) - 0.0;
     final accent = Theme.of(context).accentColor;
 
     var floatingElevation = (heightMultiplier - 300) * 0.08;
@@ -91,7 +91,16 @@ class PodcastBannerState extends State<PodcastBanner> {
             backgroundColor: new Color.fromARGB(floatingAlpha, accent.red, accent.green, accent.blue),
             onPressed: () => onActionPressed(),
           ),
-        )
+        ),
+        new Positioned(
+          left: 0.0,
+          top: 0.0,
+          right: 0.0,
+          child: new Container(
+            height: MediaQuery.of(context).padding.top,
+            decoration: new BoxDecoration(color: new Color.fromARGB(80, 0, 0, 0)),
+          )
+        ),
       ]
     );
   }
