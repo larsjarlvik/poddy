@@ -1,33 +1,35 @@
 os:
-  - linux
+- linux
 sudo: false
 language: android
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-26.0.2
-    - android-27
+  - tools
+  - platform-tools
+  - build-tools-26.0.2
+  - android-27
   licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 env:
   global:
-    - ANDROID_HOME=${TRAVIS_BUILD_DIR}/android-sdk
-    - PATH=${ANDROID_HOME}/:${ANDROID_HOME}/tools/:${ANDROID_HOME}/platform-tools/:${PATH}
+  - ANDROID_HOME=${TRAVIS_BUILD_DIR}/android-sdk
+  - PATH=${ANDROID_HOME}/:${ANDROID_HOME}/tools/:${ANDROID_HOME}/platform-tools/:${PATH}
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test 
+    - ubuntu-toolchain-r-test
     packages:
-      - lib32stdc++6
-      - fonts-droid
+    - lib32stdc++6
+    - fonts-droid
 before_script:
-  - git clone https://github.com/flutter/flutter.git -b beta
-  - ./flutter/bin/flutter doctor
+- git clone https://github.com/flutter/flutter.git -b beta
+- "./flutter/bin/flutter doctor"
+before_install:
+- openssl aes-256-cbc -K $encrypted_48c69e2e2e61_key -iv $encrypted_48c69e2e2e61_iv -in android/key.properties.enc -out android/key.properties -d
 script:
-  - ./flutter/bin/flutter build apk
+- "./flutter/bin/flutter build apk"
 cache:
   directories:
-    - $HOME/.pub-cache
+  - "$HOME/.pub-cache"
