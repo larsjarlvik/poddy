@@ -99,17 +99,18 @@ class HomePageState extends State<HomePage> with RouteAware {
       ),
       body: RefreshIndicator(
         onRefresh: handleRefresh,
-          child: new Column(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildSearchSpinner(context),
-            buildPageContent(context)
+            _buildSearchSpinner(context),
+            _buildPageContent(context)
           ],
         )
       )
     );
   }
 
-  buildSearchSpinner(BuildContext context) {
+  _buildSearchSpinner(BuildContext context) {
     return new AnimatedOpacity(
       opacity: pageState == PageState.Searching ? 1.0 : 0.0,
       duration: new Duration(milliseconds: 1000),
@@ -122,22 +123,24 @@ class HomePageState extends State<HomePage> with RouteAware {
     );
   }
 
-  buildPageContent(BuildContext context) {
+  _buildPageContent(BuildContext context) {
     return new Flexible(
       child: new AnimatedCrossFade(
         duration: const Duration(milliseconds: 300),
-        firstChild: buildHome(),
+        firstChild: _buildHome(),
         secondChild: new AnimatedOpacity(
           opacity: pageState != PageState.Searching ? 1.0 : 0.0,
           duration: new Duration(milliseconds: 300),
-          child: buildSearch(),
+          child: _buildSearch(),
         ),
         crossFadeState: pageState == PageState.Home || pageState == PageState.ShowSearch ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       )
     );
   }
 
-  buildHome() {
+  _buildHome() {
+    if (subscriptions.length == 0 && pageState == PageState.Home) return _buildWelcome();
+
     return GridView.builder(
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3
@@ -152,11 +155,47 @@ class HomePageState extends State<HomePage> with RouteAware {
     );
   }
 
-  buildSearch() {
+  _buildWelcome() {
+    return new Container(
+      padding: EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 30.0),
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image(image: AssetImage('assets/nothing-here.png')),
+          new Container(
+            padding: EdgeInsets.only(top: 20.0),
+            child: new Column(
+              children: [
+                new Text('Nothing here...', 
+                  style: TextStyles.subHeadline(context),
+                  textAlign: TextAlign.center,
+                ),
+                new Text('You haven\'t subscribed to any podcasts. Search for a podcast and hit the subscibe button and it will show up here.', 
+                  style: TextStyles.body(context), 
+                  textAlign: TextAlign.center,
+                ),
+                new Container(
+                  padding: new EdgeInsets.only(top: 20.0),
+                  child: new OutlineButton(
+                    padding: EdgeInsets.fromLTRB(20.0, 7.0, 20.0, 12.0),
+                    child: new Text('Browse popular podcasts', style: TextStyles.body(context, fontWeight: FontWeight.bold)),
+                    onPressed: () {},
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0))
+                  )
+                )
+              ]
+            ),
+          )
+        ]
+      ),
+    );
+  }
+
+  _buildSearch() {
     if (searchResults == null) {
       return new Center(
-        child: new Text('', style: TextStyles.body(context)
-      ));
+        child: new Text('', style: TextStyles.body(context))
+      );
     }
 
     if (searchResults.length == 0) {
