@@ -39,7 +39,7 @@ deploy:
   api_key:
     secure: C9kB9Bsjnpv/QP6OHFNXBJzRgDOvaDZXCp4ycJS0cXf9HxP0WtuTKa5BZv4LehPcC17nrJE4ebUaofCb8GU1Z5CK+WJsLqoGpBJsay0Nw55RDz7vd7mU80y+jNtQbn6i8UcpkNeqCqQgYVJksU0YYPWd4/GBR/jfF35d1k+hyVD8obsPlRyP7k36RDy+pFFDrmRurjBB23BUud1cYyWLiesvULIpsFK3v3TA9spjGYxHP7LXsQC/IqCw9qXrK/FXGJXN1kpjmvGQGPDDO/1BwW1ibIU/ihqgYR7/e7wA6RLgh6Kv5FiMiM9TfFqwOcHEvrg5jb0LvmmGQyvASaapmlZQvfE4rcdOD40jmAl0oM2I3Uree6+yLNEYqg+JQh91yEaUGXWsGDxuG4nHcmgHsjIh8hN4mf8Ycspk1qBV851nkLMl+mGOEZtr6Fr2WDqXshRLF7Ffaq7BkIeyCvW8GKJm384w6Gr3TIZwRgcl1Te8jg50HVMXBL/oi1SVoNKpN6caG6tNOrBznUou3vEWYR3zKjJgFgm2KMRs76Z/cxSize0Qpv+xc5vzyQWYbLnC+Lw1z96kRMRVE/B2Vnk2AU48DQjFgsi4zKSV1d1+K09iXXjBR8LmXKVu58pI7shTCE69gTdfhz4rGJtgrO+CWCSr5OV3Ew/3yqmk1QhTvGc=
   file: build/app/outputs/apk/release/app-release.apk
-  overwrite: true
   skip_cleanup: true
   on:
     repo: larsjarlvik/poddy
+    branch: master
