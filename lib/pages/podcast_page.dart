@@ -192,7 +192,7 @@ class PodcastPageState extends State<PodcastPage> {
       trailing: new IconButton(
         color: Theme.of(context).accentColor,
         icon: new Icon(Icons.play_circle_outline),
-        onPressed: () { new Player().play(episode); },
+        onPressed: () { new Player().play(podcast, episode); },
       ),
     );
   }
